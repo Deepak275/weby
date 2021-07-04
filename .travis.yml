@@ -6,12 +6,12 @@ stages:
   # - deploy
 services:
   - docker
-before_script:
-- psql -c 'create database weby_test;' -U postgres
-- mv config/travis_database.yml config/database.yml
-- mv config/secrets.yml.example config/secrets.yml
-- RAILS_ENV=test bundle exec rake --trace db:schema:load
-script: bin/rspec spec
+# before_script:
+# - psql -c 'create database weby_test;' -U postgres
+# - mv config/travis_database.yml config/database.yml
+# - mv config/secrets.yml.example config/secrets.yml
+# - RAILS_ENV=test bundle exec rake --trace db:schema:load
+# script: bin/rspec spec
 notifications:
   webhooks:
     urls:
@@ -26,6 +26,7 @@ jobs:
     - stage: build
       name: "Build docker images"
       script: docker build -t demo-weby-image .
+    -   
     # - stage: deploy
     #   name: "Deploy to GCP"
     #   script: ./deploy
