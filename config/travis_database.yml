@@ -2,3 +2,8 @@ test:
   adapter: postgresql
   database: weby_test
   username: postgres
+
+development:
+  adapter: postgresql
+  database: weby_development
+  username: postgres

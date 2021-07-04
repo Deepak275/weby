@@ -7,7 +7,7 @@ stages:
 services:
   - docker
 before_script:
-# - psql -c 'create database weby_test;' -U postgres
+- psql -c 'create database weby_development;' -U postgres
 - mv config/travis_database.yml config/database.yml
 - mv config/secrets.yml.example config/secrets.yml
 # - RAILS_ENV=test bundle exec rake --trace db:schema:load
