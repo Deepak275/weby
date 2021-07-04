@@ -6,6 +6,7 @@ stages:
   # - deploy
 services:
   - docker
+  - postgresql
 before_script:
 - psql -c 'create database weby_development;' -U postgres
 - mv config/travis_database.yml config/database.yml
