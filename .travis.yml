@@ -26,7 +26,10 @@ jobs:
   include:
     - stage: build
       name: "Build docker images"
-      script: docker build -t demo-weby-image .
+      script: 
+        # - docker build -t demo-weby-image .
+        - echo "someone here"
+        - echo "deepak"
     -   
     # - stage: deploy
     #   name: "Deploy to GCP"
