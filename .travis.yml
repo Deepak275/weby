@@ -11,6 +11,8 @@ before_script:
 - psql -c 'create database weby_development;' -U postgres
 - mv config/travis_database.yml config/database.yml
 - mv config/secrets.yml.example config/secrets.yml
+- pip install -U pip
+- pip install awscli
 # - RAILS_ENV=test bundle exec rake --trace db:schema:load
 # script: bin/rspec spec
 notifications:
