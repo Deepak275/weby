@@ -1,6 +1,11 @@
 language: ruby
 rvm:
 - 2.4.4
+stages:
+  - build
+  # - deploy
+services:
+  - docker
 before_script:
 - psql -c 'create database weby_test;' -U postgres
 - mv config/travis_database.yml config/database.yml
@@ -15,3 +20,12 @@ notifications:
     on_failure: always
   slack:
     secure: zxImXQ03YcFxIRY3GiRBEslkZPrfulnFq5t7MjJNCWZsfNOyLxqCzFDHISedgh4TGkrUXE9/5Z1KDb0du7FK14sjoDfHMCru2cJdZBdZ/vIYoub6cafM0yrGK0/YawqWqQFFW6lGazG1D0tmkFZS6JduO2FYMlwgqwOh9zM9w8w=
+
+jobs:
+  include:
+    - stage: build
+      name: "Build docker images"
+      script: docker build -t demo-weby-image .
+    # - stage: deploy
+    #   name: "Deploy to GCP"
+    #   script: ./deploy
