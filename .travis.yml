@@ -30,7 +30,7 @@ jobs:
         # - docker build -t demo-weby-image .
         - echo "someone here"
         - echo "deepak"
-    -   
+        - aws ecr get-login-password --region ap-south-1| docker login --username AWS --password-stdin 830507477504.dkr.ecr.ap-south-1.amazonaws.com 
     # - stage: deploy
     #   name: "Deploy to GCP"
     #   script: ./deploy
