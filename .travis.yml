@@ -7,6 +7,8 @@ stages:
 services:
   - docker
   - postgresql
+env:
+  - AWS_ECR=$AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby 
 before_script:
 - psql -c 'create database weby_development;' -U postgres
 - mv config/travis_database.yml config/database.yml
@@ -26,14 +28,22 @@ notifications:
 
 jobs:
   include:
+    # - stage: test
+    #   name: "Build docker images"
+    #   # script: 
+    #   #   - psql -c 'create database weby_test;' -U postgres
+    #   #   - mv config/travis_database.yml config/database.yml
+    #   #   - mv config/secrets.yml.example config/secrets.yml
+    #   #   - RAILS_ENV=test bundle exec rake --trace db:schema:load
+    #   #   - bin/rspec spec
     - stage: build
       name: "Build docker images"
       script: 
-        # - docker build -t demo-weby-image .
-        - echo "someone here"
-        - echo "deepak"
+        # - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby: .
         - echo $TRAVIS_COMMIT
-        # - aws ecr get-login-password --region ap-south-1| docker login --username AWS --password-stdin 830507477504.dkr.ecr.ap-south-1.amazonaws.com 
+        - echo $AWS_ECR
+        - aws ecr get-login-password --region ap-south-1| docker login --username AWS --password-stdin 830507477504.dkr.ecr.ap-south-1.amazonaws.com
+        - 
     - stage: deploy
       name: "Deploy to GCP"
       script: echo "deploy stage"
