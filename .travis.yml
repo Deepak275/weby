@@ -39,11 +39,14 @@ jobs:
     - stage: build
       name: "Build docker images"
       script: 
-        # - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby: .
+        - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT .
+        - docker tag $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:latest
         - echo $TRAVIS_COMMIT
         - echo $AWS_ECR
         - aws ecr get-login-password --region ap-south-1| docker login --username AWS --password-stdin 830507477504.dkr.ecr.ap-south-1.amazonaws.com
-        - 
+        - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT
+        - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:latest
+
     - stage: deploy
       name: "Deploy to GCP"
       script: echo "deploy stage"
