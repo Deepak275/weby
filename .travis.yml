@@ -39,7 +39,9 @@ jobs:
     #   #   - bin/rspec spec
     - stage: build
       name: "Build docker images"
-      script: 
+      script:
+        - mv config/travis_database.yml config/database.yml
+        - mv config/secrets.yml.example config/secrets.yml
         - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT .
         - docker tag $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:latest        
         - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT
