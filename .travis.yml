@@ -5,16 +5,17 @@ stages:
   - build
   - deploy
 services:
+  # - test
   - docker
   - postgresql
 env:
   - AWS_ECR=$AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby 
 before_script:
-- psql -c 'create database weby_development;' -U postgres
-- mv config/travis_database.yml config/database.yml
-- mv config/secrets.yml.example config/secrets.yml
 - pip install -U pip
 - pip install awscli
+- echo $TRAVIS_COMMIT
+- echo $AWS_ECR
+- aws ecr get-login-password --region ap-south-1| docker login --username AWS --password-stdin 830507477504.dkr.ecr.ap-south-1.amazonaws.com
 # - RAILS_ENV=test bundle exec rake --trace db:schema:load
 # script: bin/rspec spec
 notifications:
@@ -40,13 +41,11 @@ jobs:
       name: "Build docker images"
       script: 
         - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT .
-        - docker tag $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:latest
-        - echo $TRAVIS_COMMIT
-        - echo $AWS_ECR
-        - aws ecr get-login-password --region ap-south-1| docker login --username AWS --password-stdin 830507477504.dkr.ecr.ap-south-1.amazonaws.com
+        - docker tag $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:latest        
         - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:$TRAVIS_COMMIT
         - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/weby:latest
 
     - stage: deploy
-      name: "Deploy to GCP"
-      script: echo "deploy stage"
+      name: "Deploy to AWS"
+      script: 
+        - aws cloudformation create-stack --stack-name weby-cft --template-url  https://cf-templates-lq1fztl5lj2k-ap-south-1.s3.ap-south-1.amazonaws.com/2021187XmD-weby-cft-2.yaml
