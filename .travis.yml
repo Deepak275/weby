@@ -50,4 +50,4 @@ jobs:
     - stage: deploy
       name: "Deploy to AWS"
       script: 
-        - aws cloudformation create-stack --stack-name weby-cft --template-url  https://cf-templates-lq1fztl5lj2k-ap-south-1.s3.ap-south-1.amazonaws.com/20211877hL-weby-cft-2.yaml
+        - aws cloudformation create-stack --stack-name weby-cft --template-url  https://cf-templates-lq1fztl5lj2k-ap-south-1.s3.ap-south-1.amazonaws.com/20211877hL-weby-cft-2.yaml --capabilities=CAPABILITY_NAMED_IAM
